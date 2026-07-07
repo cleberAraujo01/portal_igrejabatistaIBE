@@ -14,6 +14,13 @@ import { Reveal } from '@/components/ui/Reveal';
  * `backdrop` (opcional) aplica uma imagem de fundo decorativa com
  * art direction: uma versao horizontal no desktop e outra vertical
  * no mobile, sob uma camada clara que garante a legibilidade (AA).
+ *
+ * `tone="gold"` (opcional) troca o acabamento verde pelos tons
+ * dourados que a home ja usa: acento do titulo em #F0B054 solido,
+ * breadcrumb/eyebrow em #E8C37A e filtro quente (sepia) na imagem —
+ * o overlay claro de legibilidade permanece o mesmo. `meta`
+ * (opcional) adiciona a linha de metadados de leitura abaixo do
+ * paragrafo (ex.: tempo de leitura/capitulos).
  */
 export function PageHeader({
   eyebrow,
@@ -23,6 +30,8 @@ export function PageHeader({
   lead,
   crumbs,
   backdrop,
+  tone = 'emerald',
+  meta,
 }: {
   eyebrow: string;
   index: string;
@@ -31,7 +40,14 @@ export function PageHeader({
   lead: string;
   crumbs: { name: string; path: string }[];
   backdrop?: { desktop: string; mobile: string };
+  tone?: 'emerald' | 'gold';
+  meta?: readonly { value: string; label: string }[];
 }) {
+  const gold = tone === 'gold';
+  // Filtro sepia/quente aplicado ao backdrop no tom dourado.
+  const warmFilter = gold
+    ? '[filter:sepia(0.35)_saturate(0.75)_brightness(1.05)_contrast(1.02)]'
+    : '';
   return (
     <header className="relative overflow-hidden border-b border-line">
       {/* Fundo decorativo opcional (art direction desktop/mobile). */}
@@ -43,7 +59,7 @@ export function PageHeader({
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-top md:hidden"
+            className={`object-cover object-top md:hidden ${warmFilter}`}
           />
           {/* Desktop: imagem horizontal, Biblia a direita. */}
           <Image
@@ -51,7 +67,7 @@ export function PageHeader({
             alt=""
             fill
             sizes="100vw"
-            className="hidden object-cover object-right md:block"
+            className={`hidden object-cover object-right md:block ${warmFilter}`}
           />
           {/* Camada clara para legibilidade (AA). Mobile: plana; desktop:
               mais opaca a esquerda (texto) e revelando a Biblia a direita. */}
@@ -73,7 +89,10 @@ export function PageHeader({
                   return (
                     <li key={c.path} className="flex items-center gap-2">
                       {last ? (
-                        <span aria-current="page" className="text-emerald">
+                        <span
+                          aria-current="page"
+                          className={gold ? 'text-[#e8c37a]' : 'text-emerald'}
+                        >
                           {c.name}
                         </span>
                       ) : (
@@ -91,7 +110,9 @@ export function PageHeader({
 
           <Reveal delay={0.05}>
             <div className="flex items-center justify-between gap-4">
-              <span className="eyebrow">{eyebrow}</span>
+              <span className={`eyebrow ${gold ? 'text-[#e8c37a] [&::before]:bg-[#f0b054]' : ''}`}>
+                {eyebrow}
+              </span>
               <span className="font-sans text-label uppercase text-muted/70">
                 {index} <span className="text-muted/40">/</span> 05
               </span>
@@ -101,13 +122,33 @@ export function PageHeader({
           <Reveal delay={0.1}>
             <h1 className="mt-6 max-w-[16ch] font-display text-display-lg font-bold leading-[1] text-ink">
               {title}{' '}
-              {accent && <span className="font-medium italic text-emerald">{accent}</span>}
+              {accent && (
+                <span
+                  className={`font-medium italic ${gold ? 'text-[#f0b054]' : 'text-emerald'}`}
+                >
+                  {accent}
+                </span>
+              )}
             </h1>
           </Reveal>
 
           <Reveal delay={0.15}>
             <p className="prose-editorial mt-8 md:max-w-2xl md:text-lg">{lead}</p>
           </Reveal>
+
+          {/* Meta de leitura (opcional): refere o formato de folheto */}
+          {meta && (
+            <Reveal delay={0.2}>
+              <ul className="mt-10 flex flex-wrap gap-x-10 gap-y-6">
+                {meta.map((m) => (
+                  <li key={m.label}>
+                    <p className="font-display text-2xl font-semibold text-ink">{m.value}</p>
+                    <p className="mt-1 font-sans text-sm text-muted">{m.label}</p>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
         </div>
       </div>
     </header>

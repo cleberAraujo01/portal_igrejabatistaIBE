@@ -9,16 +9,25 @@ import { BrandMark } from '@/components/icons/Logo';
 /**
  * Header — navegacao principal.
  * -------------------------------------------------------------
- * Barra sticky (em fluxo, sem sobrepor o conteudo) com fundo verde
- * translucido e blur, valida sobre o hero escuro e sobre as paginas
- * claras. Marca compacta a esquerda (cruz em quadrado com gradiente),
- * navegacao central e botao LIVE com bolinha pulsante a direita.
- * Marca o link ativo por rota (aria-current) para acessibilidade e
- * para o sublinhado.
+ * Barra sticky sempre visivel. No topo da pagina fica translucida
+ * (verde-escuro do design system + blur) para se fundir a hero; ao
+ * rolar alem de 48px transiciona para o verde-escuro solido com
+ * sombra sutil. Marca compacta a esquerda (logo oficial com fio
+ * dourado), navegacao com sublinhado dourado animado e botao LIVE
+ * com bolinha pulsante a direita. Marca o link ativo por rota
+ * (aria-current) para acessibilidade e para o realce dourado.
  */
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Bloqueia o scroll do body enquanto o menu mobile esta aberto.
   useEffect(() => {
@@ -30,8 +39,17 @@ export function Header() {
 
   const isActive = (href: string) => pathname.startsWith(href);
 
+  // Solido tambem com o menu mobile aberto (fundo do painel).
+  const solid = scrolled || open;
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[rgba(13,40,24,0.55)] backdrop-blur-[10px]">
+    <header
+      className={`sticky top-0 z-50 border-b border-white/[0.08] transition-all duration-500 ease-editorial ${
+        solid
+          ? 'bg-emerald-deep shadow-[0_12px_30px_-18px_rgba(4,15,10,0.7)]'
+          : 'bg-emerald-deep/45 backdrop-blur-[10px]'
+      }`}
+    >
       <div className="container flex h-[76px] items-center justify-between gap-6 text-paper">
         {/* Lockup da marca */}
         <Link
@@ -57,7 +75,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="nav-link nav-link--light text-[14.5px] text-[#dce8dd]"
+              className="nav-link nav-link--light text-[14.5px] tracking-[0.04em] text-[#dce8dd]"
               data-active={isActive(item.href)}
               aria-current={isActive(item.href) ? 'page' : undefined}
             >
@@ -108,7 +126,7 @@ export function Header() {
       {/* Painel mobile */}
       <div
         id="mobile-nav"
-        className={`overflow-hidden bg-[#0d2818] text-paper transition-[max-height] duration-500 ease-editorial lg:hidden ${
+        className={`overflow-hidden bg-emerald-deep text-paper transition-[max-height] duration-500 ease-editorial lg:hidden ${
           open ? 'max-h-[80vh]' : 'max-h-0'
         }`}
       >

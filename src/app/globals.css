@@ -82,12 +82,18 @@
   .nav-link[data-active='true']::after {
     @apply origin-left scale-x-100;
   }
-  /* Variante clara: para o header sobre a foto escura da hero. */
+  /* Variante clara: para o header sobre fundo verde-escuro.
+     Hover em dourado suave, com o sublinhado animando da esquerda
+     para a direita (herdado de .nav-link); o item ativo tambem
+     fica dourado. */
   .nav-link--light {
-    @apply text-paper/[0.86] hover:text-paper;
+    @apply text-paper/[0.86] hover:text-[#e8c37a];
   }
   .nav-link--light::after {
-    @apply bg-emerald-soft;
+    @apply bg-[#e8c37a];
+  }
+  .nav-link--light[data-active='true'] {
+    @apply text-[#e8c37a];
   }
 
   /* Botao primario editorial. */

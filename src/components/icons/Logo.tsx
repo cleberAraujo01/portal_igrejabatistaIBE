@@ -5,14 +5,15 @@ import type { SVGProps } from 'react';
  * BrandMark — marca compacta com o logo oficial.
  * -------------------------------------------------------------
  * Logo real da igreja (cruz verde sobre Biblia aberta) em um
- * quadrado claro 36x36 de cantos 9px, garantindo contraste sobre
- * os fundos verde-escuros do header e do footer.
+ * quadrado claro 36x36 de cantos 9px com fio dourado sutil,
+ * garantindo contraste sobre os fundos verde-escuros do header e
+ * do footer.
  */
 export function BrandMark({ className = '' }: { className?: string }) {
   return (
     <span
       aria-hidden
-      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-paper ${className}`}
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] border border-gold/60 bg-paper ${className}`}
     >
       <Image
         src="/images/logo-ibe.png"

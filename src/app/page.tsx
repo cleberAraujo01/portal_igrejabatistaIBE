@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FamilyCta } from '@/components/sections/FamilyCta';
 import { Hero } from '@/components/sections/Hero';
 import { SplashIntro } from '@/components/sections/SplashIntro';
 import { Reveal } from '@/components/ui/Reveal';
@@ -10,6 +11,7 @@ import {
   IconBook,
   IconCross,
   IconHeadphones,
+  IconMusicNote,
   IconPin,
   IconPlay,
 } from '@/components/icons';
@@ -43,7 +45,7 @@ const resources = [
     href: '/salvacao',
     external: false,
     aria: 'Como ser salvo: conheça o plano de Deus para a salvação',
-    image: '/images/ministerio-boas-novas.png',
+    image: '/images/ministerio-boas-novas.jpg',
   },
   {
     icon: IconBook,
@@ -64,6 +66,18 @@ const resources = [
     external: true,
     aria: 'Acessar cursos no portal Bíblia Aberta (abre em nova aba)',
     image: '/images/splash-bg-desktop.png',
+  },
+  {
+    icon: IconMusicNote,
+    title: 'Música Cristã',
+    text: 'Louvores e hinos produzidos pelo nosso ministério, para ouvir e adorar a qualquer momento.',
+    action: 'Ouvir agora',
+    // PLACEHOLDER: troque pela URL real da playlist/album do ministerio
+    // (YouTube Music, Spotify etc.). Por ora aponta para o canal.
+    href: 'https://www.youtube.com/@IgrejaBatistaEmanueldeJundiai',
+    external: true,
+    aria: 'Ouvir os louvores do ministério de música (abre em nova aba)',
+    image: '/images/ministerio-musica.jpg',
   },
 ] as const;
 
@@ -355,6 +369,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Fechamento — Faca parte da nossa familia */}
+      <FamilyCta />
     </>
   );
 }

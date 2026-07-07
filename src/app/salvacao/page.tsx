@@ -45,7 +45,10 @@ function Movement({
     <Reveal>
       <article className="grid grid-cols-12 gap-4 border-t border-line py-12 md:gap-8 md:py-16">
         <div className="col-span-12 md:col-span-4">
-          <span className="font-sans text-label uppercase text-muted/70">{index}</span>
+          {/* Numeracao do capitulo: serifada dourada, com presenca */}
+          <span className="font-display text-xl font-semibold tracking-[0.08em] text-[#f0b054]">
+            {index}
+          </span>
           <h2 className="mt-4 font-display text-2xl font-bold leading-tight text-ink md:text-3xl">
             {title}
           </h2>
@@ -59,11 +62,11 @@ function Movement({
 /** Citação bíblica destacada. */
 function Verse({ children, cite }: { children: ReactNode; cite: string }) {
   return (
-    <figure className="my-7 border-l-2 border-emerald pl-6">
+    <figure className="my-7 border-l-2 border-[#f0b054] pl-6">
       <blockquote className="scripture text-xl leading-snug text-ink md:text-2xl">
         {children}
       </blockquote>
-      <figcaption className="mt-3 font-sans text-label uppercase text-emerald">{cite}</figcaption>
+      <figcaption className="mt-3 font-sans text-label uppercase text-[#f0b054]">{cite}</figcaption>
     </figure>
   );
 }
@@ -89,6 +92,12 @@ export default function SalvacaoPage() {
           desktop: '/images/bg-salvacao-desktop.png',
           mobile: '/images/bg-salvacao-mobile.png',
         }}
+        tone="gold"
+        meta={[
+          { value: '8 min', label: 'de leitura' },
+          { value: '5', label: 'capítulos' },
+          { value: 'Bíblia', label: 'como base' },
+        ]}
       />
 
       {/* Barra com download do folheto */}
@@ -97,7 +106,7 @@ export default function SalvacaoPage() {
           <p className="font-sans text-sm text-muted">
             Leia o folheto completo abaixo ou leve com você.
           </p>
-          <a href={PDF_HREF} download className="btn-primary">
+          <a href={PDF_HREF} download className="btn-gold">
             <IconDownload className="h-5 w-5" />
             Baixar em PDF
           </a>
@@ -330,10 +339,7 @@ export default function SalvacaoPage() {
             Se você fez essa oração, queremos caminhar com você nos primeiros passos.
           </p>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Link
-              href="/contato"
-              className="btn-primary bg-paper text-emerald-deep hover:bg-emerald-soft"
-            >
+            <Link href="/contato" className="btn-gold">
               Quero conversar
               <IconArrow className="h-5 w-5" />
             </Link>
